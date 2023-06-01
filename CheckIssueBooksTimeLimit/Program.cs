@@ -36,7 +36,7 @@ namespace CheckIssuedBooksTimeLimit
             var bar = serviceProvider.GetService<IFooService>();
             bar.DoSomething();
 
-            //logger.LogDebug("All done!");
+           
         }
     }
 }

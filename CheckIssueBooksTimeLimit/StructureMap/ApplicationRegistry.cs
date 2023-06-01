@@ -1,10 +1,8 @@
-﻿using Lamar;
+﻿using CheckIsssueBooksTimeLimit.Services.Implementation;
+using Microsoft.Extensions.Configuration;
+using Serilog;
 using StructureMap;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace CheckIssuedBooksTimeLimit.StructureMap
 {
@@ -14,14 +12,33 @@ namespace CheckIssuedBooksTimeLimit.StructureMap
         {
             Scan(scanner =>
             {
-                scanner.TheCallingAssembly();
-                scanner.WithDefaultConventions();
-                scanner.AssemblyContainingType(typeof(Program));
-                scanner.AssembliesAndExecutablesFromApplicationBaseDirectory(assembly =>
-                assembly.GetName().Name.StartsWith("CheckIssuedBooksTimeLimit."));
+            scanner.TheCallingAssembly();
+            scanner.AssembliesAndExecutablesFromApplicationBaseDirectory
+               (assembly => assembly.GetName().Name.StartsWith("CheckIssueBooksTimeLimit."));
+            scanner.AssemblyContainingType(typeof(Program));
+            scanner.WithDefaultConventions();
+
+            
             });
 
+            var builder = new ConfigurationBuilder()
+                      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            //.Build();
 
+            IConfigurationRoot configuration = builder.Build();
+
+            string path = configuration["AppLogPath"];
+
+            var logger = new LoggerConfiguration()
+                  .ReadFrom.Configuration(configuration)
+                    .WriteTo.File(path+@"\Logs\log-{Date}.txt")
+                  .CreateLogger();
+
+            Log.Logger = logger;
+
+
+            For<ILogger>().Use(logger);
+            For<IConfiguration>().Use(configuration).Singleton();
 
         }
     }
