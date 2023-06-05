@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="CheckMsgSentToStudent" namespace="CheckMsgSentToStudent.Models">
+	<class name="IssueBook" table="IssueBooks">
+		<id name="Id">
+			<generator class="native"/>
+		</id>
+		<property name="StudentId"/>
+		<property name="StudentNumber"/>
+		<property name="StudentDepartment"/>
+		<property name="StudentSemester"/>
+		<property name="StudentContact"/>
+		<property name="StudentEmail"/>
+		<property name="BookName"/>
+		<property name="IssueDate"/>
+		<property name="ReturnDate"/>
+	</class>
+</hibernate-mapping>

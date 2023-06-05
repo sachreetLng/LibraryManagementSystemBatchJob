@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="CheckMsgSentToStudent" namespace="CheckMsgSentToStudent.Models">
+	<class name="BookReminder" table="BookReminder">
+		<id name="Id">
+			<generator class="native"/>
+		</id>
+		<property name="StudentId"/>
+		<property name="BookId"/>
+		<property name="DaysExceededToReturnBook"/>
+		<property name="MessageText"/>
+		<property name="IsMessageSent"/>
+	</class>
+</hibernate-mapping>

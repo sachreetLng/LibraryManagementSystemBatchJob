@@ -1,8 +1,8 @@
-﻿using CheckIsssueBooksTimeLimit.Services.Implementation;
+﻿using CheckIssuedBooksTimeLimit.DBconnect.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using StructureMap;
-
 
 namespace CheckIssuedBooksTimeLimit.StructureMap
 {
@@ -21,11 +21,15 @@ namespace CheckIssuedBooksTimeLimit.StructureMap
             
             });
 
-            var builder = new ConfigurationBuilder()
-                      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            //.Build();
+            var configurationBuilder = new ConfigurationBuilder()
+             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
-            IConfigurationRoot configuration = builder.Build();
+            IConfigurationRoot configuration = configurationBuilder.Build();
+            var connectionString = configuration.GetConnectionString("DBConnectionString");
+
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<LibraryServiceContext>();
+            dbContextOptionsBuilder.UseSqlServer(connectionString);
+
 
             string path = configuration["AppLogPath"];
 

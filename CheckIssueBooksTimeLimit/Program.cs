@@ -1,12 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using CheckIssuedBooksTimeLimit.Data;
+using CheckIssuedBooksTimeLimit.DBconnect.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using StructureMap;
 using CheckIssuedBooksTimeLimit.StructureMap;
 using Serilog.Core;
-using CheckIsssueBooksTimeLimit.Services.Interface;
+using CheckIssueBooksTimeLimit.Services.Implementation;
+using CheckIssueBooksTimeLimit.Services.Interface;
+using CheckIssueBooksTimeLimit;
 
 namespace CheckIssuedBooksTimeLimit
 {
@@ -15,7 +17,6 @@ namespace CheckIssuedBooksTimeLimit
         static void Main(string[] args)
         {
 
-            // add the framework services
             var services = new ServiceCollection()
                 .AddLogging();
 
@@ -23,20 +24,16 @@ namespace CheckIssuedBooksTimeLimit
             var container = new Container();
             container.Configure(config =>
             {
-                // Register services with StructureMap
                 config.AddRegistry(new ApplicationRegistry());
 
-                // Populate the container using the service collection
-                config.Populate(services);
+                config.Populate(services); 
             });
 
+            
             var serviceProvider = container.GetInstance<IServiceProvider>();
-
-            //do the actual work here
-            var bar = serviceProvider.GetService<IFooService>();
-            bar.DoSomething();
-
-           
+            var bookReminderService= container.GetInstance<BookReminderService>();
+            bookReminderService.CheckBooksToNotify();
+            
         }
     }
 }

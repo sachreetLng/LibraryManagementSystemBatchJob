@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CheckIsssueBooksTimeLimit.Services.Interface
+namespace CheckIssuedBooksTimeLimit.Core
 {
-    public interface IFooService
+    public class BaseEntity
     {
-        void DoSomething();
+        public DateTime MyProperty { get; set; }
     }
 }
